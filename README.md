@@ -63,5 +63,8 @@ El bloque `try...catch` implementado está diseñado a prueba de fallos:
 ---
 
 <div align="center">
+  <h3>👥 Participantes</h3>
+  <p><strong>Victoria González</strong> y <strong>Miguel Lagunes</strong></p>
+  <br/>
   <i>Construido con React para demostración académica.</i>
 </div>
