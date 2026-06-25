@@ -8,6 +8,8 @@ function App() {
   const [cargando, setCargando] = useState(true); 
   // Estado para capturar y mostrar errores (red o HTTP)
   const [error, setError] = useState(null); 
+  // estado para almacenar una foto aleatoria
+  const [fotogatito, setfotogatito] = useState('');
 
   // Petición asíncrona a las APIs con manejo de errores encadenado
   const obtenerDatoCurioso = async () => {
@@ -36,6 +38,11 @@ function App() {
       
       // Actualización del estado con el texto final traducido
       setDato(datosTraduccion.responseData.translatedText);
+
+      // 3. Fetch a la API de The Cat API para obtener una foto aleatoria
+      const respuestaFoto = await fetch('https://api.thecatapi.com/v1/images/search');
+      const datosFoto = await respuestaFoto.json();
+      setfotogatito(datosFoto[0].url);
 
     } catch (err) {
       // Diferenciación de errores: TypeError (Fallo de Red/CORS) vs Errores HTTP
@@ -85,13 +92,23 @@ function App() {
           </div>
         )}
 
-        {/* Renderizado condicional del dato cargado exitosamente */}
+        {/* Renderizado condicional del dato e imagen cargado exitosamente */}
         {!cargando && !error && (
-          <div className="py-8 relative">
-            <MessageCircle className="absolute top-0 left-0 text-purple-100 opacity-60" size={56} />
-            <p className="text-xl md:text-2xl font-medium italic text-purple-900 relative z-10 px-6 leading-relaxed">
-              "{dato}"
-            </p>
+          <div className="flex flex-col items-center gap-6 py-8">
+            {fotogatito && (
+              <img 
+                src={fotogatito} 
+                alt="Gatito aleatorio" 
+                className="w-40 h-40 object-cover rounded-2xl shadow-lg"
+              />
+            )}
+          
+            <div className="relative">
+              <MessageCircle className="absolute -top-2 -left-2 text-purple-100 opacity-60" size={56} />
+              <p className="text-xl md:text-2xl font-medium italic text-purple-900 relative z-10 px-6 leading-relaxed">
+                "{dato}"
+              </p>
+            </div>
           </div>
         )}
 
@@ -115,7 +132,7 @@ function App() {
         </button>
 
       </div>
-    </div>
+  </div>
   );
 }
 
